@@ -29,8 +29,8 @@ public class Product {
     private String description;
     @Column(name = "unit_price")
     private BigDecimal unitPrice;
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image_Url")
+    private String imageURL;
     @Column(name = "active")
     private boolean active;
     @Column(name = "units_in_stock")
