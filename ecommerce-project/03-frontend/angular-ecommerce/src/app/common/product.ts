@@ -3,7 +3,7 @@ export class Product {
     name: string;
     description: string;
     unitPrice: number;
-    imageUrl: string;
+    imageURL: string;
     active: boolean;
     unitsInStock: number;
     dateCreated: Date;

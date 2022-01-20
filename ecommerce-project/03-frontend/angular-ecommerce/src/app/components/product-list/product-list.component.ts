@@ -16,6 +16,8 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(){
     this.listProducts();
+    //console.log(this.products);
+    //this.products.forEach(x => console.log(x))
   }
 
   listProducts(){
