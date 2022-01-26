@@ -9,28 +9,47 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-
   products: Product[];
   currentCategoryId: number;
+  searchMode: boolean;
 
   constructor(private productService: ProductService,
-              private route: ActivatedRoute) { }
+    private route: ActivatedRoute) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.route.paramMap.subscribe(() => {
       this.listProducts();
     });
   }
 
-  listProducts(){
+  listProducts() {
+
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+
+    if (this.searchMode) {
+      this.handleSearchProducts();
+    } else {
+      this.handleListProducts();
+    }
+  }
+  handleSearchProducts() {
+    const theKeyword: string = this.route.snapshot.paramMap.get('keyword');
+
+    this.productService.searchProducts(theKeyword).subscribe(
+      data => {
+        this.products = data;
+      }
+    )
+  }
+  handleListProducts() {
     //check if "id" param is available
     const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
 
-    if(hasCategoryId){ //getting the "Id" string and turning it into a number using "+"
+    if (hasCategoryId) { //getting the "Id" string and turning it into a number using "+"
       this.currentCategoryId = +this.route.snapshot.paramMap.get('id');
-    }else{
+    } else {
       //for on category id being available
-      this.currentCategoryId = 1; 
+      this.currentCategoryId = 1;
     }
 
     this.productService.getProductList(this.currentCategoryId).subscribe(
