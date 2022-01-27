@@ -1,3 +1,4 @@
+import { dashCaseToCamelCase } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from 'src/app/common/product';
@@ -9,9 +10,15 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
-  products: Product[];
-  currentCategoryId: number;
-  searchMode: boolean;
+  products: Product[] = [];
+  currentCategoryId: number = 1;
+  previousCategory: number = 1;
+  searchMode: boolean = false;
+
+  //new pagination properties
+  thePageNumber: number = 1;
+  thePageSize: number = 10;
+  theTotalElements: number = 0;
 
   constructor(private productService: ProductService,
     private route: ActivatedRoute) { }
@@ -51,12 +58,26 @@ export class ProductListComponent implements OnInit {
       //for on category id being available
       this.currentCategoryId = 1;
     }
+    //check if we have a diff. cat. that prev.
+    if (this.previousCategory != this.currentCategoryId) {
+      this.thePageNumber = 1;
+    }
 
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+    this.previousCategory = this.currentCategoryId;
+    console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`);
+
+    this.productService.getProductListPaginate(this.thePageNumber-1, 
+                                                this.thePageSize, 
+                                                this.currentCategoryId)
+                                                .subscribe(this.processResult());
   }
-
+  processResult(){
+    return data => {
+      this.products = data._embedded.products;
+      //spring data rest is zero based so you must add 1
+      this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.theTotalElements;
+    }
+  }
 }
