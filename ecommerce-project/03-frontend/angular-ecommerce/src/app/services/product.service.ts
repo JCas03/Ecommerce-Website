@@ -10,16 +10,8 @@ import { ProductCategoryMenuComponent } from '../components/product-category-men
   providedIn: 'root'
 })
 export class ProductService {
-<<<<<<< HEAD
-  
-<<<<<<< HEAD
-=======
-  
->>>>>>> section15
-=======
 
 
->>>>>>> section16
   private baseUrl = 'http://localhost:8080/api/products';
 
   private categoryUrl = 'http://localhost:8080/api/product-category'
