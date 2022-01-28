@@ -11,11 +11,21 @@ import { ProductCategoryMenuComponent } from '../components/product-category-men
 })
 export class ProductService {
   
+<<<<<<< HEAD
+=======
+  
+>>>>>>> section15
   private baseUrl = 'http://localhost:8080/api/products';
 
   private categoryUrl = 'http://localhost:8080/api/product-category'
 
   constructor(private httpClient: HttpClient) { }
+
+  getProduct(theProductId: number): Observable<Product> {
+    const productUrl = `${this.baseUrl}/${theProductId}`;
+
+    return this.httpClient.get<Product>(productUrl);
+  }
 
   getProductList(theCategoryId: number): Observable<Product[]> {
 
