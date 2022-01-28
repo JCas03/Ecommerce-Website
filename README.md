@@ -1,1 +1,1 @@
-# Section 16 Pagination
+# Section 17 Shopping Cart Status
