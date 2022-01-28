@@ -17,8 +17,10 @@ export class ProductListComponent implements OnInit {
 
   //new pagination properties
   thePageNumber: number = 1;
-  thePageSize: number = 10;
+  thePageSize: number = 5;
   theTotalElements: number = 0;
+
+  previousKeyword: string = null;
 
   constructor(private productService: ProductService,
     private route: ActivatedRoute) { }
@@ -42,11 +44,20 @@ export class ProductListComponent implements OnInit {
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword');
 
-    this.productService.searchProducts(theKeyword).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+    //if we have a diff. keywrd than prev.
+    //set pg num to 1
+
+    if(this.previousKeyword != theKeyword){
+      this.thePageNumber = 1;
+    }
+
+    this.previousKeyword = theKeyword;
+
+    console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`);
+
+    this.productService.searchProductsPaginate(this.thePageNumber - 1,
+                                              this.thePageSize,
+                                              theKeyword).subscribe(this.processResult());
   }
   handleListProducts() {
     //check if "id" param is available
@@ -77,7 +88,14 @@ export class ProductListComponent implements OnInit {
       //spring data rest is zero based so you must add 1
       this.thePageNumber = data.page.number + 1;
       this.thePageSize = data.page.size;
-      this.theTotalElements = data.page.theTotalElements;
-    }
+      this.theTotalElements = data.page.totalElements;
+    };
   }
+
+  updatePageSize(pageSize: number){
+    this.thePageSize = pageSize;
+    this.thePageNumber = 1;
+    this.listProducts();
+  }
+
 }
