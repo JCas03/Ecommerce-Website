@@ -5,6 +5,7 @@ import { Product } from 'src/app/common/product';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
 
+
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
