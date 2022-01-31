@@ -1,1 +1,1 @@
-# Section 18 Shopping Cart CRUD
+# Section 19 Checkout Form Layout
